@@ -1,4 +1,3 @@
-
 spring:
   application:
     #应用的名称，可选
@@ -15,6 +14,11 @@ spring:
       enabled: true
       max-file-size: 931775308
       max-request-size: 100MB
+  redis:
+    host: 192.168.64.128
+    port: 6379
+    database: 0
+
 mybatis-plus:
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射（mybatis-plus默认开启）
