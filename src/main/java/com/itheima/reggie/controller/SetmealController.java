@@ -17,6 +17,8 @@ import com.itheima.reggie.util.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +55,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/list")
+    @Cacheable(value = "setmealCache",key = "#p0.categoryId + '_' + #p0.status")
     public R<List<Setmeal>> list(Setmeal setmeal){
         LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
         if (setmeal.getCategoryId() != null){
@@ -142,10 +145,12 @@ public class SetmealController {
 
     /**
      * 删除套餐
+     * allEntries = true ：分类下面所有的缓存数据
      * @param ids
      * @return
      */
     @DeleteMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> deleteList(@RequestParam("ids") List<Long> ids){
         setmealService.removeWithDish(ids);
         return R.success("套餐删除成功！！");
@@ -159,6 +164,7 @@ public class SetmealController {
      * @return
      */
     @PostMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> save(@RequestBody SetmealDto setmealDto){
         log.info("套餐:{}",setmealDto);
 

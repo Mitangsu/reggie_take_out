@@ -151,6 +151,8 @@ public class DishController {
 
         dishService.removeByIds(ids);
 
+        Set keys = redisTemplate.keys("dish*");
+        redisTemplate.delete(keys);
 
         return R.success("批量删除成功");
     }
