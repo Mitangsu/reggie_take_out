@@ -17,9 +17,11 @@ import com.itheima.reggie.util.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +42,9 @@ public class SetmealController {
 
     @Autowired
     CategoryService categoryService ;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
 
     /**
@@ -129,7 +134,6 @@ public class SetmealController {
             //最后进行修改
             setmealService.updateById(item);
         }
-
 
         return R.success("批量修改成功");
 
